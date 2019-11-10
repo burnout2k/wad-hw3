@@ -5,7 +5,9 @@
         </header>
         <section id="container">
             <section id="main">
+                <keep-alive>
                 <component v-bind:is="selected"></component>
+                </keep-alive>
                 <div class="controls">
                     <button id="profile-button" :class="[ isActiveProfile ? 'pill active' : 'pill' ]" v-on:click="swap1">Profile</button>
                     <button id="courses-button" :class="[ isActiveCourses ? 'pill active' : 'pill' ]" v-on:click="swap2 ">Courses</button>
@@ -36,7 +38,9 @@
             return {
                 selected: "Users",
                 isActiveProfile: true,
-                isActiveCourses: false
+                isActiveCourses: false,
+                gpa: 0,
+                messagedaughter: 'asdf'
             };
         },
         methods: {
