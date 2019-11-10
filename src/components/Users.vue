@@ -20,13 +20,21 @@
 </template>
 
 <script>
+
 	import User from "../models/User";
+    import { bus } from '../main'
     export default {
         name: "Users",
 		data: function() {
             return {
+                gpa : 0,
                 isActiveButton: false, user:(new User("John", "Doe", "11/10/1990", "Software Engineering", 2.75))
             };
+        },
+        mounted(){
+            bus.$on('test', (data) => {
+                this.user.gpa = data
+            })
         }
     }
 </script>
