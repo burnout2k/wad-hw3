@@ -10,30 +10,12 @@
                 <th>Grade</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody v-for="(course, index) in courses" :key="index">
             <tr>
-                <td>1</td>
-                <td>Agile software development</td>
-                <td>1</td>
-                <td>82</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>System modeling</td>
-                <td>1</td>
-                <td>85</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Object-oriented programming</td>
-                <td>2</td>
-                <td>99</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>Estonian language Level A2</td>
-                <td>2</td>
-                <td>65</td>
+                <td>{{index+1}}</td>
+                <td>{{course.title}}</td>
+                <td>{{course.semester}}</td>
+                <td>{{course.grade}}</td>
             </tr>
             </tbody>
         </table>
@@ -45,7 +27,7 @@
                                 <input class="input" type="text" placeholder="Course title" id="title" v-model='title'>
                                 <input class="input" type="number" min="1" max="8" placeholder="Semester" id="semester" v-model='semester'>
                                 <input class="input" type="number" min="0" max="100" placeholder="Grade" id="grade" v-model='grade'>
-                                <button class="green-button" id="save-course">Save</button>
+                                <button class="green-button" id="save-course" v-on:click="addNewCourse">Save</button>
                                 <button class="grey-button" id="cancel-course" v-on:click="cancel">Cancel</button>
                             </span>
         </div>
@@ -53,12 +35,17 @@
 </template>
 
 <script>
-    //import Course from '../models/Course'
+	import Course from "../models/Course";
     export default {
         name: "Courses",
 		data: function() {
             return {
-                isActiveButton: false,
+                isActiveButton: false,courses: [
+                    new Course("Operation systems", 1, 98),
+                    new Course("Software Engineering", 1, 55),
+                    new Course("Algorithms and Data Structures", 1, 68),
+                    new Course("Introduction to Data Science", 1, 76)
+                ]
             };
         },
 		methods: {
@@ -75,7 +62,12 @@
 				this.semester = '';
 				this.grade = '';
 				
-            }
+            },
+			addNewCourse: function(){
+				var course = new Course(this.title, this.semester, this.grade);
+				this.courses.push(course);
+				this.cancel();
+			}
         }
     }
 </script>
