@@ -40,13 +40,13 @@
         <br>
         <br>
         <div>
-            <button id="add-course-button" class="blue-button">+</button>
-            <span id="add-course">
-                                <input class="input" type="text" placeholder="Course title" id="title">
-                                <input class="input" type="number" min="1" max="8" placeholder="Semester" id="semester">
-                                <input class="input" type="number" min="0" max="100" placeholder="Grade" id="grade">
+            <button id="add-course-button" v-on:click="swap" class="blue-button">+</button>
+            <span :id="[ isActiveButton ? 'add-course active' : 'add-course' ]">
+                                <input class="input" type="text" placeholder="Course title" id="title" v-model='title'>
+                                <input class="input" type="number" min="1" max="8" placeholder="Semester" id="semester" v-model='semester'>
+                                <input class="input" type="number" min="0" max="100" placeholder="Grade" id="grade" v-model='grade'>
                                 <button class="green-button" id="save-course">Save</button>
-                                <button class="grey-button" id="cancel-course">Cancel</button>
+                                <button class="grey-button" id="cancel-course" v-on:click="cancel">Cancel</button>
                             </span>
         </div>
     </div>
@@ -55,7 +55,28 @@
 <script>
     //import Course from '../models/Course'
     export default {
-        name: "Courses"
+        name: "Courses",
+		data: function() {
+            return {
+                isActiveButton: false,
+            };
+        },
+		methods: {
+            swap: function() {
+				if(this.isActiveButton== false){
+					this.isActiveButton = true;
+				}else{
+				this.isActiveButton = false;
+				}
+            },
+			cancel: function() {
+				this.isActiveButton = false;
+				this.title = '';
+				this.semester = '';
+				this.grade = '';
+				
+            }
+        }
     }
 </script>
 
