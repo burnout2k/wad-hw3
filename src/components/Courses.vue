@@ -1,24 +1,6 @@
 <template>
     <div id="courses-container" class="tab">
-        <h1 class="title">Courses</h1>
-        <table id="courses">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Course Title</th>
-                <th>Semester</th>
-                <th>Grade</th>
-            </tr>
-            </thead>
-            <tbody v-for="(course, index) in courses" :key="index">
-            <tr>
-                <td>{{index+1}}</td>
-                <td>{{course.title}}</td>
-                <td>{{course.semester}}</td>
-                <td>{{course.grade}}</td>
-            </tr>
-            </tbody>
-        </table>
+        <List :courses = "courses"/>
         <br>
         <br>
         <div>
@@ -35,17 +17,18 @@
 </template>
 
 <script>
+    import List from "./List";
 	import Course from "../models/Course";
     import { bus } from '../main'
     export default {
         name: "Courses",
-		data: function() {
+        components: {List},
+        data: function() {
             return {
-                //gpa: 0,
-                testgpa : 0,
+                realgpa : 0,
                 sum : 0,
-                howmanycourses : 0,
-                isActiveButton: false,courses: [
+                isActiveButton: false,
+                courses: [
                     new Course("Operation systems", 1, 98),
                     new Course("Software Engineering", 1, 55),
                     new Course("Algorithms and Data Structures", 1, 68),
@@ -55,11 +38,7 @@
         },
 		methods: {
             swap: function() {
-				if(this.isActiveButton== false){
-					this.isActiveButton = true;
-				}else{
-				this.isActiveButton = false;
-				}
+				this.isActiveButton = !this.isActiveButton;
             },
 			cancel: function() {
 				this.isActiveButton = false;
@@ -73,11 +52,10 @@
 				this.courses.push(course);
 				this.cancel();
 				this.gpa();
-                bus.$emit('test', this.testgpa);
+                bus.$emit('gpa', this.realgpa);
             },
             gpa: function() {
                 this.sum = 0;
-                this.howmanycourses = 0;
                 for (let i = 0; i < this.courses.length; i++) {
                     if (this.courses[i].grade > 90){
                         this.sum = this.sum + 4;
@@ -94,13 +72,12 @@
                     else if (this.courses[i].grade > 50){
                         this.sum = this.sum + 0.5;
                     }
-                    this.howmanycourses = this.howmanycourses + 1;
                 }
-                this.testgpa = this.sum/this.howmanycourses;
+                this.realgpa = this.sum/this.courses.length;
             },
             mounted(){
                 this.gpa();
-                bus.$emit('test', this.testgpa);
+                bus.$emit('gpa', this.realgpa);
             }
 
         },
